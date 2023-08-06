@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from task1.models import Slider,SpecialSlider,BlogPost,Tag,DealsOfTheDay,TopRatedProducts,Banner,Carousel,Contact,Register,ProductsCategory,Related
+from task1.models import Slider,SpecialSlider,BlogPost,Tag,DealsOfTheDay,TopRatedProducts,Banner,Carousel,Contact,Register,ProductsCategory,Related,bannerMovinImage
 
 # Register your models here.
 admin.site.register(Slider)
@@ -15,4 +15,5 @@ admin.site.register(Carousel)
 admin.site.register(Contact)
 admin.site.register(Related)
 admin.site.register(ProductsCategory)
+admin.site.register(bannerMovinImage)
 

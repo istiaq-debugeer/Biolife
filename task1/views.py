@@ -1,19 +1,23 @@
-
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate,logout
 from django.contrib import messages
-from django.shortcuts import render,redirect
-from django.views.generic import TemplateView,View
+
 
 from task1 import forms
 from task1.forms import RegisterForm,ContactForm
+from task1.models import Slider, SpecialSlider, BlogPost, DealsOfTheDay, TopRatedProducts, Banner, Carousel, Contact,Related,ProductsCategory,bannerMovinImage
+from django.shortcuts import render,redirect
+from django.views.generic import TemplateView,View
+def home_page(request, page_number):
+    formatted_page_number = "{:02d}".format(page_number)
+    return render(request, f'pages/home-{formatted_page_number}.html', {'page_number': page_number})
 
-from task1.models import Slider, SpecialSlider, BlogPost, DealsOfTheDay, TopRatedProducts, Banner, Carousel, Contact,Related,ProductsCategory
+class AboutUs(TemplateView):
+    template_name = 'pages/about-us.html'
 
 
-
-# Create your views here.
 class HomeView(TemplateView):
     template_name = 'index.html'
+
 
 
 
@@ -29,6 +33,7 @@ class HomeView(TemplateView):
         context['contact'] = Contact.objects.all()
         context['relate'] = Related.objects.all()
         context['category'] = ProductsCategory.objects.all()
+        context['moving'] = bannerMovinImage.objects.all()
 
         return context
 
@@ -50,13 +55,22 @@ class RegisterView(View):
 
 
 
-class loginView(TemplateView):
-        template_name = 'pages/login.html'
+
+def logout_view(request):
+    logout(request)
+    return redirect('/')
+def login_view(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        password = request.POST['password']
+        user = authenticate(request, email=email, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('/')  # Redirect to the desired page
+    return render(request, 'pages/login.html')
 
 
 
-from django.shortcuts import render
-from .models import BlogPost
 
 
 class BlogditailsView(View):

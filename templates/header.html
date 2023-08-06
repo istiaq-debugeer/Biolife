@@ -140,18 +140,19 @@
                                                 <div class="wrap-custom-menu vertical-menu">
                                                     <h4 class="menu-title">Home Page</h4>
                                                     <ul class="menu">
-                                                        <li class="menu-item" ><a href="home-01.html">Home 01</a></li>
-                                                        <li class="menu-item" ><a href="home-02.html">Home 02</a></li>
-                                                        <li class="menu-item" ><a href="index.html">Home 03</a></li>
-                                                        <li class="menu-item" ><a href="home-04.html">Home 04</a></li>
-                                                        <li class="menu-item" ><a href="home-05.html">Home 05</a></li>
-                                                        <li class="menu-item" ><a href="home-06.html">Home 06</a></li>
-                                                        <li class="menu-item" ><a href="home-07.html">Home 07</a></li>
-                                                        <li class="menu-item" ><a href="home-08.html">Home 08</a></li>
-                                                        <li class="menu-item" ><a href="home-09.html">Home 09</a></li>
-                                                        <li class="menu-item" ><a href="home-10.html">Home 10</a></li>
-                                                        <li class="menu-item" ><a href="home-11.html">Home 11</a></li>
-                                                        <li class="menu-item" ><a href="home-12.html">Home 12</a></li>
+                                                       <li><a href="{% url 'home_page' 1 %}">Home 01</a></li>
+                                                       <li><a href="{% url 'home_page' 2 %}">Home 02</a></li>
+                                                       <li><a href="{% url 'home_page' 4 %}">Home 04</a></li>
+                                                        <li><a href="{% url 'home_page' 5 %}">Home 05</a></li>
+                                                       <li><a href="{% url 'home_page'  6 %}">Home 06</a></li>
+                                                       <li><a href="{% url 'home_page' 7 %}">Home 07</a></li>
+                                                        <li><a href="{% url 'home_page' 8 %}">Home 08</a></li>
+                                                       <li><a href="{% url 'home_page' 9 %}">Home 09</a></li>
+                                                       <li><a href="{% url 'home_page' 10 %}">Home 10</a></li>
+                                                        <li><a href="{% url 'home_page' 11 %}">Home 11</a></li>
+                                                       <li><a href="{% url 'home_page' 12 %}">Home 12</a></li>
+
+
                                                     </ul>
                                                 </div>
                                             </div>
@@ -164,7 +165,7 @@
                                                         <li class="menu-item" ><a class="menu-name" href="blog-v02.html">Blog Style 02</a></li>
                                                         <li class="menu-item" ><a class="menu-name" href="blog-v03.html">Blog Style 03</a></li>
                                                         <li class="menu-item" ><a class="menu-name" href="contact.html">Contact Us</a></li>
-                                                        <li class="menu-item" ><a class="menu-name" href="about-us.html">About Us</a></li>
+                                                        <li class="menu-item" ><a class="menu-name" href="{% url 'about-us' %}">About Us</a></li>
                                                         <li class="menu-item" ><a class="menu-name" href="checkout.html">Checkout</a></li>
                                                         <li class="menu-item" ><a class="menu-name" href="shopping-cart.html">Shopping Cart</a></li>
                                                         <li class="menu-item" ><a class="menu-name" href="login.html">Login/Register</a></li>
@@ -238,36 +239,18 @@
                                                 <div class="block-posts">
                                                     <h4 class="menu-title">Recent Posts</h4>
                                                     <ul class="posts">
-                                                        <li>
-                                                            <div class="block-post-item">
-                                                                <div class="thumb"><a href="#"><img src="assets/images/megamenu/thumb-05.jpg" width="100" height="73" alt=""></a></div>
-                                                                <div class="left-info">
-                                                                    <h4 class="post-name"><a href="#">Ashwagandha: The #1 Herb in the World for Anxiety?</a></h4>
-                                                                    <span class="p-date">Jan 05, 2019</span>
-                                                                    <span class="p-comment">2 Comments</span>
+                                                        {% for post in recent_Posts %}
+                                                            <li>
+                                                                <div class="block-post-item">
+                                                                    <div class="thumb"><a href="#"><img src={{ posts.blogImage.url }} width="100" height="73" alt=""></a></div>
+                                                                    <div class="left-info">
+                                                                        <h4 class="post-name"><a href="#">{{ posts.blogheader }}</a></h4>
+                                                                        <span class="p-date">Jan 05, 2019</span>
+                                                                        <span class="p-comment">2 Comments</span>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="block-post-item">
-                                                                <div class="thumb"><a href="#"><img src="assets/images/megamenu/thumb-06.jpg" width="100" height="73" alt=""></a></div>
-                                                                <div class="left-info">
-                                                                    <h4 class="post-name"><a href="#">Ashwagandha: The #1 Herb in the World for Anxiety?</a></h4>
-                                                                    <span class="p-date">May 15, 2019</span>
-                                                                    <span class="p-comment">8 Comments</span>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="block-post-item">
-                                                                <div class="thumb"><a href="#"><img src="assets/images/megamenu/thumb-07.jpg" width="100" height="73" alt=""></a></div>
-                                                                <div class="left-info">
-                                                                    <h4 class="post-name"><a href="#">Ashwagandha: The #1 Herb in the World for Anxiety?</a></h4>
-                                                                    <span class="p-date">Apr 26, 2019</span>
-                                                                    <span class="p-comment">10 Comments</span>
-                                                                </div>
-                                                            </div>
-                                                        </li>
+                                                            </li>
+                                                        {% endfor %}
                                                     </ul>
                                                 </div>
                                             </div>

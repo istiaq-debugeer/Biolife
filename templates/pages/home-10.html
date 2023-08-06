@@ -1,30 +1,9 @@
-<!DOCTYPE html>
-<html class="no-js" lang="en">
-
-<!-- Mirrored from html.kutethemes.com/biolife/home-10.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 06 Mar 2023 18:00:53 GMT -->
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Biolife - Organic Food</title>
-    <link href="../../fonts.googleapis.com/css5d11.css?family=Cairo:200,400,600,700&amp;display=swap" rel="stylesheet">
-    <link href="../../fonts.googleapis.com/cssce04.css?family=Poppins:600&amp;display=swap" rel="stylesheet">
-    <link href="../../fonts.googleapis.com/css6259.css?family=Playfair+Display:400i,700i" rel="stylesheet">
-    <link href="../../fonts.googleapis.com/css9036.css?family=Ubuntu&amp;display=swap" rel="stylesheet">
-    <link href="../../fonts.googleapis.com/cssf7da.css?family=Alex+Brush&amp;display=swap" rel="stylesheet">
-    <link href="../../fonts.googleapis.com/cssd619.css?family=Roboto:400,700&amp;display=swap" rel="stylesheet">
-    <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/animate.min.css">
-    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
-    <link rel="stylesheet" href="assets/css/nice-select.css">
-    <link rel="stylesheet" href="assets/css/slick.min.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/css-addition.css">
-    <link rel="stylesheet" href="assets/css/home-10.css">
-    <link rel="stylesheet" href="assets/css/main-color10.css">
-</head>
-<body class="biolife-body biolife-body__home-10">
+{% extends 'base.html' %}
+{% block content %}
+    {% load static %}
+     <link rel="stylesheet" href="{% static 'assets/css/home-10.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/main-color10.css' %}">
+    <body class="biolife-body biolife-body__home-10">
 
 <!-- Preloader -->
 <div id="biof-loading">
@@ -42,7 +21,7 @@
     <div class="header-top hidden-xs">
         <div class="container">
             <div class="top-bar left">
-                <p class="text-welcome">Welcome To Worldwide Organic Store</p>  
+                <p class="text-welcome">Welcome To Worldwide Organic Store</p>
             </div>
             <div class="top-bar right">
                 <ul class="menus">
@@ -75,18 +54,18 @@
                                             <div class="wrap-custom-menu vertical-menu">
                                                 <h4 class="menu-title">Home Page</h4>
                                                 <ul class="menu">
-                                                    <li class="menu-item" ><a href="home-01.html">Home 01</a></li>
-                                                    <li class="menu-item" ><a href="home-02.html">Home 02</a></li>
-                                                    <li class="menu-item" ><a href="index.html">Home 03</a></li>
-                                                    <li class="menu-item" ><a href="home-04.html">Home 04</a></li>
-                                                    <li class="menu-item" ><a href="home-05.html">Home 05</a></li>
-                                                    <li class="menu-item" ><a href="home-06.html">Home 06</a></li>
-                                                    <li class="menu-item" ><a href="home-07.html">Home 07</a></li>
-                                                    <li class="menu-item" ><a href="home-08.html">Home 08</a></li>
-                                                    <li class="menu-item" ><a href="home-09.html">Home 09</a></li>
-                                                    <li class="menu-item" ><a href="home-10.html">Home 10</a></li>
-                                                    <li class="menu-item" ><a href="home-11.html">Home 11</a></li>
-                                                    <li class="menu-item" ><a href="home-12.html">Home 12</a></li>
+                                                    <li><a href="{% url 'home_page' 1 %}">Home 01</a></li>
+                                                       <li><a href="{% url 'home_page' 2 %}">Home 02</a></li>
+                                                        <li><a href="{% url 'home_page' 3 %}">Home 03</a></li>
+                                                       <li><a href="{% url 'home_page' 4 %}">Home 04</a></li>
+                                                        <li><a href="{% url 'home_page' 5 %}">Home 05</a></li>
+                                                       <li><a href="{% url 'home_page'  6 %}">Home 06</a></li>
+                                                       <li><a href="{% url 'home_page' 7 %}">Home 07</a></li>
+                                                        <li><a href="{% url 'home_page' 8 %}">Home 08</a></li>
+                                                       <li><a href="{% url 'home_page' 9 %}">Home 09</a></li>
+                                                       <li><a href="{% url 'home_page' 10 %}">Home 10</a></li>
+                                                        <li><a href="{% url 'home_page' 11 %}">Home 11</a></li>
+                                                       <li><a href="{% url 'home_page' 12 %}">Home 12</a></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -334,7 +313,7 @@
         <!-- Block 01: Main slide block-->
         <div class="main-slide block-slider home-10__elm-01">
             <ul class="biolife-carousel nav-none-on-mobile nav-insite-grid-1170 nav-larger" data-slick='{"arrows": true, "dots": false, "slidesMargin": 0, "slidesToShow": 1, "infinite": true, "speed": 800}' >
-                
+
                 <li>
                     <div class="slide-contain biolife-slide__ten biolife-slide__ten--elm-01">
                         <div class="media"></div>
@@ -1262,7 +1241,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Block 06: Product Tab-->
         <div class="biolife-tab biolife-tab-contain biolife-tab__layout-10 biolife-tab__layout-10--media-left home-10__elm-06">
             <div class="container">
@@ -3120,6 +3099,8 @@
 <script src="assets/js/biolife.framework.js"></script>
 <script src="assets/js/functions.js"></script>
 </body>
+{% endblock %}
+
+
 
 <!-- Mirrored from html.kutethemes.com/biolife/home-10.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 06 Mar 2023 18:01:34 GMT -->
-</html>

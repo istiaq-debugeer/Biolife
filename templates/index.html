@@ -181,18 +181,12 @@
                 <div class="biolife-banner promotion biolife-banner__promotion">
                     <div class="banner-contain">
                         <div class="media background-biolife-banner__promotion">
+                            {% for x in moving %}
                             <div class="img-moving position-1">
-                                <img src="assets/images/home-03/img-moving-pst-1.png" width="149" height="139" alt="img msv">
+                                <img src={{x.movingimage}} width="149" height="139" alt="img msv">
                             </div>
-                            <div class="img-moving position-2">
-                                <img src="assets/images/home-03/img-moving-pst-2.png" width="185" height="265" alt="img msv">
-                            </div>
-                            <div class="img-moving position-3">
-                                <img src="assets/images/home-03/img-moving-pst-3-cut.png" width="384" height="151" alt="img msv">
-                            </div>
-                            <div class="img-moving position-4">
-                                <img src="assets/images/home-03/img-moving-pst-4.png" width="198" height="269" alt="img msv">
-                            </div>
+                            {% endfor %}
+
                         </div>
                         <div class="text-content">
                             <div class="container text-wrap">

@@ -1,26 +1,8 @@
-<!DOCTYPE html>
-<html class="no-js" lang="en">
-
-<!-- Mirrored from html.kutethemes.com/biolife/home-01.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 06 Mar 2023 17:58:07 GMT -->
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Biolife - Organic Food</title>
-    <link href="../../fonts.googleapis.com/css2367.css?family=Cairo:400,600,700&amp;display=swap" rel="stylesheet">
-    <link href="../../fonts.googleapis.com/cssce04.css?family=Poppins:600&amp;display=swap" rel="stylesheet">
-    <link href="../../fonts.googleapis.com/css6259.css?family=Playfair+Display:400i,700i" rel="stylesheet">
-    <link href="../../fonts.googleapis.com/css9036.css?family=Ubuntu&amp;display=swap" rel="stylesheet">
-    <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/animate.min.css">
-    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
-    <link rel="stylesheet" href="assets/css/nice-select.css">
-    <link rel="stylesheet" href="assets/css/slick.min.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/main-color01.css">
-</head>
-<body class="biolife-body">
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/main-color01.css' %}">
+    <body class="biolife-body">
 
     <!-- Preloader -->
     <div id="biof-loading">
@@ -356,7 +338,7 @@
                     <div class="col-lg-6 col-md-6 hidden-sm hidden-xs md-possition-initial">
                         <div class="primary-menu">
                             <ul class="menu biolife-menu clone-main-menu clone-primary-menu" id="primary-menu" data-menuname="main menu">
-                                <li class="menu-item"><a href="#">Home</a></li>
+                                <li class="menu-item"><a href="{% url 'index' %}">Home</a></li>
                                 <li class="menu-item menu-item-has-children has-megamenu">
                                     <a href="#" class="menu-name" data-title="Shop" >Shop</a>
                                     <div class="wrap-megamenu lg-width-900 md-full-width">
@@ -451,18 +433,17 @@
                                                 <div class="wrap-custom-menu vertical-menu">
                                                     <h4 class="menu-title">Home Page</h4>
                                                     <ul class="menu">
-                                                        <li class="menu-item" ><a href="home-01.html">Home 01</a></li>
-                                                        <li class="menu-item" ><a href="home-02.html">Home 02</a></li>
-                                                        <li class="menu-item" ><a href="index.html">Home 03</a></li>
-                                                        <li class="menu-item" ><a href="home-04.html">Home 04</a></li>
-                                                        <li class="menu-item" ><a href="home-05.html">Home 05</a></li>
-                                                        <li class="menu-item" ><a href="home-06.html">Home 06</a></li>
-                                                        <li class="menu-item" ><a href="home-07.html">Home 07</a></li>
-                                                        <li class="menu-item" ><a href="home-08.html">Home 08</a></li>
-                                                        <li class="menu-item" ><a href="home-09.html">Home 09</a></li>
-                                                        <li class="menu-item" ><a href="home-10.html">Home 10</a></li>
-                                                        <li class="menu-item" ><a href="home-11.html">Home 11</a></li>
-                                                        <li class="menu-item" ><a href="home-12.html">Home 12</a></li>
+                                                        <li><a href="{% url 'home_page' 1 %}">Home 01</a></li>
+                                                       <li><a href="{% url 'home_page' 2 %}">Home 02</a></li>
+                                                       <li><a href="{% url 'home_page' 4 %}">Home 04</a></li>
+                                                        <li><a href="{% url 'home_page' 5 %}">Home 05</a></li>
+                                                       <li><a href="{% url 'home_page'  6 %}">Home 06</a></li>
+                                                       <li><a href="{% url 'home_page' 7 %}">Home 07</a></li>
+                                                        <li><a href="{% url 'home_page' 8 %}">Home 08</a></li>
+                                                       <li><a href="{% url 'home_page' 9 %}">Home 09</a></li>
+                                                       <li><a href="{% url 'home_page' 10 %}">Home 10</a></li>
+                                                        <li><a href="{% url 'home_page' 11 %}">Home 11</a></li>
+                                                       <li><a href="{% url 'home_page' 12 %}">Home 12</a></li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -761,6 +742,7 @@
             </div>
         </div>
     </header>
+
 
     <!-- Page Contain -->
     <div class="page-contain">
@@ -3887,6 +3869,8 @@
     <script src="assets/js/biolife.framework.js"></script>
     <script src="assets/js/functions.js"></script>
 </body>
+{% endblock %}
+
 
 <!-- Mirrored from html.kutethemes.com/biolife/home-01.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 06 Mar 2023 17:58:37 GMT -->
 </html>

@@ -116,3 +116,7 @@ class Related(models.Model):
 
       def __str__(self):
           return self.productname
+
+
+class bannerMovinImage(models.Model):
+     movingimage=models.ImageField(upload_to='moveimage/')
