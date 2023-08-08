@@ -104,9 +104,10 @@
                         <h3 class="cmt-title">Comments<sup>(26)</sup></h3>
 
                         <div class="comment-form">
-                            <form action="#" method="post" name="frm-post-comment">
+                            <form action="{% url 'comment' %}" method="post" name="frm-post-comment">
+                                {% csrf_token %}
                                 <p class="form-row">
-                                    <textarea name="txt-comment" id="txt-comment-ath-3364" cols="30" rows="10" placeholder="Write your comment"></textarea>
+                                    <textarea name="textcomment" id="txt-comment-ath-3364" cols="30" rows="10" placeholder="Write your comment"></textarea>
                                     <a href="#" class="current-author"><img src="assets/images/blogpost/viewer-avt.png" width="41" height="41" alt=""></a>
                                 </p>
                                 <p class="form-row last-btns">
@@ -390,14 +391,7 @@
     <!-- Scroll Top Button -->
     <a class="btn-scroll-top"><i class="biolife-icon icon-left-arrow"></i></a>
 
-    <script src="assets/js/jquery-3.4.1.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/jquery.countdown.min.js"></script>
-    <script src="assets/js/jquery.nice-select.min.js"></script>
-    <script src="assets/js/jquery.nicescroll.min.js"></script>
-    <script src="assets/js/slick.min.js"></script>
-    <script src="assets/js/biolife.framework.js"></script>
-    <script src="assets/js/functions.js"></script>
+
 </body>
 {% endblock %}
 

@@ -45,6 +45,9 @@ class SpecialSlider(models.Model):
 class Tag(models.Model):
     name=models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.name
+
 class BlogPost(models.Model):
         blogImage=models.ImageField(upload_to='blog/')
         blogheader=models.CharField(max_length=50)
@@ -54,10 +57,17 @@ class BlogPost(models.Model):
         blogditails=models.TextField(max_length=500)
 
 
-        # def get_recent_posts(self):
-        #     return BlogPost.objects.filter(blogheader__in=self.blogheader)
+        # def get_recent_blog(self):
+        #     return BlogPost.objects.filter(tags__in=self.tags.all())
 
+class Comment(models.Model):
+    user=models.ForeignKey(Register,on_delete=models.CASCADE)
+    textcomment=models.TextField(max_length=500)
+    publishdate=models.DateTimeField(auto_now=True)
 
+class CommentAttachment(models.Model):
+    comment=models.ForeignKey(Comment,on_delete=models.CASCADE)
+    attachment=models.FileField(upload_to='attachment/')
 class DealsOfTheDay(models.Model):
     productimage=models.ImageField(upload_to='ProductDeals/')
     targetdatetime=models.DateTimeField()
@@ -68,12 +78,35 @@ class DealsOfTheDay(models.Model):
     productditails=models.CharField(max_length=50)
     buttontext=models.CharField(max_length=20)
 
-class TopRatedProducts(models.Model):
+    def __str__(self):
+        return self.productname
+
+class Category(models.Model):
+    title=models.CharField(max_length=50)
+    subcattegorry=models.CharField()
+    icon=models.CharField(max_length=20,blank=True)
+    subcategory = models.BooleanField(default=False)
+    def __str__(self):
+        return self.title
+
+
+
+    @property
+    def get_products(self):
+        return self.products_set.all()
+
+class Products(models.Model):
+    category=models.ForeignKey(Category,on_delete=models.CASCADE)
+    subcategory=models.BooleanField(default=False)
     productimage = models.ImageField(upload_to='toprelatedProduct/')
     productcategory = models.CharField(max_length=50)
     productname = models.CharField(max_length=50)
     productDiscountprice = models.DecimalField(max_digits=90, decimal_places=2)
     productOriginalprice = models.DecimalField(max_digits=90, decimal_places=2)
+    productDiscription=models.TextField(max_length=200)
+
+    def __str__(self):
+        return self.productname
 
 class Banner(models.Model):
     bannerimage=models.ImageField(upload_to='banner/')
@@ -95,28 +128,49 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.name
-class ProductsCategory(models.Model):
-    name=models.CharField(max_length=50)
-    icon=models.CharField(max_length=20)
 
-    def __str__(self):
-        return self.name
 
-    @property
-    def get_related(self):
-        return self.related_set.all()
 
-class Related(models.Model):
-      category=models.ForeignKey(ProductsCategory,on_delete=models.CASCADE)
-      productimage=models.ImageField(upload_to='Related/')
-      productname=models.CharField(max_length=100)
-      prodcutdiscountprice=models.DecimalField(max_digits=90,decimal_places=2,default=0.00)
-      productoriginalprice=models.DecimalField(max_digits=90,decimal_places=2,default=0.00)
-      productdescriptopm=models.CharField(max_length=100)
-
-      def __str__(self):
-          return self.productname
 
 
 class bannerMovinImage(models.Model):
      movingimage=models.ImageField(upload_to='moveimage/')
+
+class FolloUs(models.Model):
+    instaImage=models.ImageField(upload_to='insta/')
+
+
+    def __str__(self):
+        self.productname
+
+class SpecialOffer(models.Model):
+    productimage=models.ImageField(upload_to='SpecialOffer/')
+    text1=models.CharField(max_length=30)
+    text2=models.CharField(max_length=30)
+    text3=models.CharField(max_length=30)
+    text4=models.CharField(max_length=30)
+    boldtext=models.CharField(max_length=30)
+    productname=models.CharField(max_length=50)
+    productprice=models.DecimalField(max_digits=100,decimal_places=2,default=0)
+    productamount=models.CharField(max_length=50)
+
+
+    def __str__(self):
+        return self.productname
+
+class WebsiteSetting(models.Model):
+    logo=models.ImageField(upload_to='logo/')
+    email:models.EmailField(max_length=40)
+    twitterlink=models.CharField(max_length=100)
+    facebooklink=models.CharField(max_length=100)
+    youtubelink=models.CharField(max_length=100)
+    instagramlink=models.CharField(max_length=100)
+    linkdeinlink=models.CharField(max_length=100)
+    phonenumber=models.CharField(max_length=50)
+    availableTime=models.CharField(max_length=100)
+
+
+
+
+
+

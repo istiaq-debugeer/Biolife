@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
     <link rel="stylesheet" href="{% static 'assets/css/main-color04.css' %}">
 <body class="biolife-body">
@@ -290,7 +291,7 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li class="menu-item"><a href="contact.html">Contact</a></li>
+                                <li class="menu-item"><a href="{% url 'contact' %}">Contact</a></li>
                             </ul>
                         </div>
                     </div>

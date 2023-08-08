@@ -130,16 +130,16 @@
                             <ul class="tabs md-margin-bottom-35-im xs-margin-bottom-40-im">
                                 {% for categorys in category %}
                                     <li class="tab-element {% if forloop.first %}active{% endif %}">
-                                        <a href="#{{ categorys.name }}" class="tab-link"><span class="biolife-icon {{ categorys.icon }}"></span>{{ categorys.name }}</a>
+                                        <a href="#{{ categorys.title }}" class="tab-link"><span class="biolife-icon {{ categorys.icon }}"></span>{{ categorys.subcattegorry }}</a>
                                     </li>
                                 {% endfor %}
                             </ul>
                         </div>
                         <div class="tab-content">
                             {% for categorys in category %}
-                                <div id="{{ categorys.name }}" class="tab-contain {% if forloop.counter0 == 0 %}active{% endif %}" >
+                                <div id="{{ categorys.title }}" class="tab-contain {% if forloop.counter0 == 0 %}active{% endif %}" >
                                 <ul class="products-list biolife-carousel nav-center-02 nav-none-on-mobile eq-height-contain" data-slick='{"rows":2 ,"arrows":true,"dots":false,"infinite":true,"speed":400,"slidesMargin":10,"slidesToShow":4, "responsive":[{"breakpoint":1200, "settings":{ "slidesToShow": 4}},{"breakpoint":992, "settings":{ "slidesToShow": 3, "slidesMargin":25 }},{"breakpoint":768, "settings":{ "slidesToShow": 2, "slidesMargin":15}}]}'>
-                                    {% for x in categorys.get_related %}
+                                    {% for x in categorys.get_products %}
                                         <li class="product-item" >
                                             <div class="contain-product layout-default">
                                             <div class="product-thumb">
@@ -149,14 +149,14 @@
                                                 <a class="lookup btn_call_quickview" href="#"><i class="biolife-icon icon-search"></i></a>
                                             </div>
                                             <div class="info">
-                                                <b class="categories">{{ x.category }}</b>
+                                                <b class="categories">{{ x.productcategory }}</b>
                                                 <h4 class="product-title"><a href="#" class="pr-name">{{ x.productname }}</a></h4>
                                                 <div class="price ">
-                                                    <ins><span class="price-amount"><span class="currencySymbol">£</span>{{ x.prodcutdiscountprice }}</span></ins>
-                                                    <del><span class="price-amount"><span class="currencySymbol">£</span>{{ x.productoriginalprice }}</span></del>
+                                                    <ins><span class="price-amount"><span class="currencySymbol">£</span>{{ x.productDiscountprice }}</span></ins>
+                                                    <del><span class="price-amount"><span class="currencySymbol">£</span>{{ x.productOriginalprice }}</span></del>
                                                 </div>
                                                 <div class="slide-down-box">
-                                                    <p class="message">{{ x.productdescriptopm }}</p>
+                                                    <p class="message">{{x.productDiscription}}</p>
                                                     <div class="buttons">
                                                         <a href="#" class="btn wishlist-btn"><i class="fa fa-heart" aria-hidden="true"></i></a>
                                                         <a href="#" class="btn add-to-cart-btn"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i>add to cart</a>
@@ -275,7 +275,7 @@
                                     <h3 class="title">Top Rated Products</h3>
                                 </div>
                                 <ul class="products biolife-carousel eq-height-contain nav-center-03 nav-none-on-mobile row-space-29px" data-slick='{"rows":2,"arrows":true,"dots":false,"infinite":false,"speed":400,"slidesMargin":30,"slidesToShow":2,"responsive":[{"breakpoint":1200,"settings":{ "rows":2, "slidesToShow": 2}},{"breakpoint":992, "settings":{ "rows":2, "slidesToShow": 1}},{"breakpoint":768, "settings":{ "rows":2, "slidesToShow": 2}},{"breakpoint":500, "settings":{ "rows":2, "slidesToShow": 1}}]}'>
-                                    {% for top in Toprated %}
+                                    {% for top in products.get_products %}
                                         <li class="product-item">
                                         <div class="contain-product right-info-layout contain-product__right-info-layout">
                                             <div class="product-thumb">

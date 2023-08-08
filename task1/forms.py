@@ -3,7 +3,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import EmailInput, PasswordInput,ModelForm
 
-from task1.models import Contact,Register
+from task1.models import Contact,Register,Comment,CommentAttachment
 
 
 
@@ -21,3 +21,14 @@ class ContactForm(ModelForm):
     class Meta:
         model=Contact
         fields='__all__'
+
+class CommentForm(ModelForm):
+        class Meta:
+            model=Comment
+            fields=['textcomment']
+
+
+class AttachmentForm(ModelForm):
+    class Meta:
+        model=CommentAttachment
+        fields=['attachment']
