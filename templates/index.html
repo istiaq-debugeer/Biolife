@@ -60,26 +60,27 @@
                 <div class="container">
                     <ul class="biolife-carousel dots_ring_style" data-slick='{"arrows": false, "dots": true, "slidesMargin": 30, "slidesToShow": 1, "infinite": true, "speed": 800, "responsive":[{"breakpoint":1200, "settings":{ "slidesToShow": 1}},{"breakpoint":768, "settings":{ "slidesToShow": 2, "slidesMargin":20, "dots": false}},{"breakpoint":480, "settings":{ "slidesToShow": 1}}]}' >
                         {% for x in specialslider  %}
-                        <li>
+
+                            <li>
                             <div class="slide-contain biolife-banner__special">
                                 <div class="banner-contain">
                                     <div class="media">
                                         <a href="#" class="bn-link">
-                                            <figure><img src={{ x.slideImage.url }} width="616" height="483" alt=""></figure>
+                                            <figure><img src={{ x.sliderImage.url }} width="616" height="483" alt=""></figure>
                                         </a>
                                     </div>
                                     <div class="text-content">
-                                        <b class="first-line">{{ x.slideHeader }}</b>
+                                        <b class="first-line">{{ x.slideheader }}</b>
                                         <span class="second-line">{{ x.firsttitle }}</span>
                                         <span class="third-line">Easy <i>{{ x.secoundtitle }}</i></span>
                                         <div class="product-detail">
                                             <h4 class="product-name">{{ x.productName }}</h4>
                                             <div class="price price-contain">
-                                                <ins><span class="price-amount"><span class="currencySymbol">£</span>{{ x.productDiscountPrice }}</span></ins>
-                                                <del><span class="price-amount"><span class="currencySymbol">£</span>{{ x.productOriginalPrice }}</span></del>
+                                                <ins><span class="price-amount"><span class="currencySymbol">£</span>{{ x.price }}</span></ins>
+                                                <del><span class="price-amount"><span class="currencySymbol">£</span>{{ x.oldprice }}</span></del>
                                             </div>
                                             <div class="buttons">
-                                                <a href="#" class="btn add-to-cart-btn">{{x.Buttontext }}</a>
+                                                <a href="{% url 'add-to-cart' x.id  %}" class="btn add-to-cart-btn">Add to Cart</a>
                                             </div>
                                         </div>
                                     </div>
@@ -87,6 +88,7 @@
                             </div>
                         </li>
                         {% endfor %}
+
                     </ul>
                     <div class="biolife-service type01 biolife-service__type01 sm-margin-top-0 xs-margin-top-45px">
                         <b class="txt-show-01">100%Nature</b>
@@ -130,7 +132,7 @@
                             <ul class="tabs md-margin-bottom-35-im xs-margin-bottom-40-im">
                                 {% for categorys in category %}
                                     <li class="tab-element {% if forloop.first %}active{% endif %}">
-                                        <a href="#{{ categorys.title }}" class="tab-link"><span class="biolife-icon {{ categorys.icon }}"></span>{{ categorys.subcattegorry }}</a>
+                                        <a href="#{{ categorys.title }}" class="tab-link"><span class="biolife-icon {{ categorys.icon }}"></span>{{ categorys.title }}</a>
                                     </li>
                                 {% endfor %}
                             </ul>
@@ -143,7 +145,7 @@
                                         <li class="product-item" >
                                             <div class="contain-product layout-default">
                                             <div class="product-thumb">
-                                                <a href="#" class="link-to-product">
+                                                <a href="" class="link-to-product">
                                                     <img src={{ x.productimage.url }} alt="Vegetables" width="270" height="270" class="product-thumnail">
                                                 </a>
                                                 <a class="lookup btn_call_quickview" href="#"><i class="biolife-icon icon-search"></i></a>
@@ -152,14 +154,14 @@
                                                 <b class="categories">{{ x.productcategory }}</b>
                                                 <h4 class="product-title"><a href="#" class="pr-name">{{ x.productname }}</a></h4>
                                                 <div class="price ">
-                                                    <ins><span class="price-amount"><span class="currencySymbol">£</span>{{ x.productDiscountprice }}</span></ins>
-                                                    <del><span class="price-amount"><span class="currencySymbol">£</span>{{ x.productOriginalprice }}</span></del>
+                                                    <ins><span class="price-amount"><span class="currencySymbol">£</span>{{ x.price }}</span></ins>
+                                                    <del><span class="price-amount"><span class="currencySymbol">£</span>{{ x.oldprice }}</span></del>
                                                 </div>
                                                 <div class="slide-down-box">
                                                     <p class="message">{{x.productDiscription}}</p>
                                                     <div class="buttons">
                                                         <a href="#" class="btn wishlist-btn"><i class="fa fa-heart" aria-hidden="true"></i></a>
-                                                        <a href="#" class="btn add-to-cart-btn"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i>add to cart</a>
+                                                        <a href="{% url 'add-to-cart' x.id %}" class="btn add-to-cart-btn"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i>add to Cart</a>
                                                         <a href="#" class="btn compare-btn"><i class="fa fa-random" aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
@@ -233,9 +235,10 @@
                                     <h3 class="title">Deals of the day</h3>
                                 </div>
                                 <ul class="products biolife-carousel nav-top-right nav-none-on-mobile" data-slick='{"arrows":true, "dots":false, "infinite":false, "speed":400, "slidesMargin":30, "slidesToShow":1}'>
-                                    {% for deal in deals %}
 
-                                        <li class="product-item">
+                                        {% for deal in deals %}
+
+                                            <li class="product-item">
                                         <div class="contain-product deal-layout contain-product__deal-layout">
                                             <div class="product-thumb">
                                                 <a href="#" class="link-to-product">
@@ -257,14 +260,19 @@
                                                     <p class="message">{{ deal.productditails }}</p>
                                                     <div class="buttons">
                                                         <a href="#" class="btn wishlist-btn"><i class="fa fa-heart" aria-hidden="true"></i></a>
-                                                        <a href="#" class="btn add-to-cart-btn">{{ deal.buttontext }}</a>
+
+
+
+                                                            <a href="{% url 'add-to-cart' deal.pk %}" class="btn add-to-cart-btn">Add to Cart</a>
+
                                                         <a href="#" class="btn compare-btn"><i class="fa fa-random" aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </li>
-                                    {% endfor %}
+                                        {% endfor %}
+
 
                                 </ul>
                             </div>
@@ -275,11 +283,11 @@
                                     <h3 class="title">Top Rated Products</h3>
                                 </div>
                                 <ul class="products biolife-carousel eq-height-contain nav-center-03 nav-none-on-mobile row-space-29px" data-slick='{"rows":2,"arrows":true,"dots":false,"infinite":false,"speed":400,"slidesMargin":30,"slidesToShow":2,"responsive":[{"breakpoint":1200,"settings":{ "rows":2, "slidesToShow": 2}},{"breakpoint":992, "settings":{ "rows":2, "slidesToShow": 1}},{"breakpoint":768, "settings":{ "rows":2, "slidesToShow": 2}},{"breakpoint":500, "settings":{ "rows":2, "slidesToShow": 1}}]}'>
-                                    {% for top in products.get_products %}
+                                    {% for top in products %}
                                         <li class="product-item">
                                         <div class="contain-product right-info-layout contain-product__right-info-layout">
                                             <div class="product-thumb">
-                                                <a href="#" class="link-to-product">
+                                                <a href="{% url 'singleproductview' top.id %}" class="link-to-product">
                                                     <img src={{ top.productimage.url }} alt="dd" width="270" height="270" class="product-thumnail">
                                                 </a>
                                             </div>

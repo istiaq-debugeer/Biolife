@@ -121,7 +121,7 @@
                                                     </div>
                                                     <div class="col-lg-6 col-md-4 col-sm-12 lg-padding-left-50 xs-margin-bottom-25 md-margin-bottom-0">
                                                         <div class="biolife-products-block max-width-270">
-                                                            <h4 class="menu-title">Bestseller Products</h4>
+                                                            <h4 class="menu-title">Bestseller Produc</h4>
                                                             <ul class="products-list default-product-style biolife-carousel nav-none-after-1k2 nav-center" data-slick='{"rows":1,"arrows":true,"dots":false,"infinite":false,"speed":400,"slidesMargin":30,"slidesToShow":1, "responsive":[{"breakpoint":767, "settings":{ "arrows": false}}]}' >
                                                                 <li class="product-item">
                                                                     <div class="contain-product none-overlay">
@@ -996,18 +996,18 @@
                     <div class="biolife-tab biolife-tab-contain">
                         <div class="tab-head tab-head__sample-layout type-02 xs-margin-bottom-15px ">
                             <ul class="tabs">
-                                {% for x in category %}
+                                {% for categorys in category %}
                                     <li class="tab-element {% if forloop.first %} active{% endif %}">
-                                        <a href=#{{ x.subcategory }} class="tab-link">{{ x.subcategory }}</a>
+                                        <a href=#{{ categorys.subcattegorry }} class="tab-link">{{ categorys.subcattegorry }}</a>
                                     </li>
                                 {% endfor %}
                             </ul>
                         </div>
                         <div class="tab-content">
-                            {% for x in ourproducttitle %}
-                                <div id={{ x.subcategory }} class="tab-contain {% if forloop.counter0 == 0  %}active{% endif %}">
+                            {% for catagorys in category %}
+                                <div id={{ catagorys.subcattegorry }} class="tab-contain {% if forloop.counter0 == 0  %} active {% endif %}">
                                 <ul class="products-list biolife-carousel nav-center-02 nav-none-on-mobile eq-height-contain" data-slick='{"rows":2 ,"arrows":true,"dots":false,"infinite":true,"speed":400,"slidesMargin":10,"slidesToShow":4, "responsive":[{"breakpoint":1200, "settings":{ "slidesToShow": 4}},{"breakpoint":992, "settings":{ "slidesToShow": 3, "slidesMargin": 30}},{"breakpoint":768, "settings":{ "slidesToShow": 2, "slidesMargin": 15}}]}'>
-                                    {% for product in x.get_ourproductslist  %}
+                                    {% for product in catagorys.get_products  %}
                                         <li class="product-item">
                                         <div class="contain-product layout-default">
                                             <div class="product-thumb">
@@ -1781,14 +1781,7 @@
     <!-- Scroll Top Button -->
     <a class="btn-scroll-top"><i class="biolife-icon icon-left-arrow"></i></a>
 
-    <script src="assets/js/jquery-3.4.1.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/jquery.countdown.min.js"></script>
-    <script src="assets/js/jquery.nice-select.min.js"></script>
-    <script src="assets/js/jquery.nicescroll.min.js"></script>
-    <script src="assets/js/slick.min.js"></script>
-    <script src="assets/js/biolife.framework.js"></script>
-    <script src="assets/js/functions.js"></script>
+
 </body>
 {% endblock %}
 

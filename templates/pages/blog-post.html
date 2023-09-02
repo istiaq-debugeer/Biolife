@@ -111,7 +111,7 @@
                                     <a href="#" class="current-author"><img src="assets/images/blogpost/viewer-avt.png" width="41" height="41" alt=""></a>
                                 </p>
                                 <p class="form-row last-btns">
-                                    <button type="submit" class="btn btn-sumit">post a comment</button>
+                                    <button type="submit" class="btn btn-submit">post a comment</button>
                                     <a href="#" class="btn btn-fn-1"><i class="fa fa-smile-o" aria-hidden="true"></i></a>
                                     <a href="#" class="btn btn-fn-1"><i class="fa fa-paperclip" aria-hidden="true"></i></a>
                                     <a href="#" class="btn btn-fn-1"><i class="fa fa-file-image-o" aria-hidden="true"></i></a>
@@ -127,19 +127,20 @@
 
                                         <div class="cmt-inner">
                                             <div class="auth-info">
-                                                <a href="#" class="author-contact"><img src="assets/images/blogpost/author-02.png" alt="" width="29" height="28">Christiano Bale</a>
-                                                <span class="cmt-time">4 days ago</span>
-                                            </div>
-                                            <div class="cmt-content">
-                                                <p>Nam sed eleifend dui, eu eleifend leo.Mauris ornare eros quis placerat mollis. Duis ornare euismod risus at dictum. Proin<br>
-                                                    at porttitor metus. Nunc luctus nisl suscipit, hendrerit ligula non.</p>
-                                            </div>
-                                            <div class="cmt-fooot">
-                                                <a href="#" class="btn btn-response"><i class="fa fa-commenting" aria-hidden="true"></i>Comment</a>
-                                                <a href="#" class="btn btn-like"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>9</a>
-                                                <a href="#" class="btn btn-dislike"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i>1</a>
-                                            </div>
-                                        </div>
+                                            {% for list in comments %}
+                                                        <a href="#" class="author-contact"><img src="assets/images/blogpost/author-02.png" alt="" width="29" height="28">{{ list.user }}</a>
+                                                        <span class="cmt-time">{{ list.publishdate }}</span>
+                                                    </div>
+                                                    <div class="cmt-content">
+                                                        <p>{{ list.textcomment }}</p>
+                                                    </div>
+                                                    <div class="cmt-fooot">
+                                                        <a href="{% url 'comment' %}" class="btn btn-response"><i class="fa fa-commenting" aria-hidden="true"></i>Comment</a>
+                                                        <a href="#" class="btn btn-like"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>9</a>
+                                                        <a href="#" class="btn btn-dislike"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i>1</a>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
 
                                         <div class="comment-resposes">
                                             <ol class="post-comments lever-1">

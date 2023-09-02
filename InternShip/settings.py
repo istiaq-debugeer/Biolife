@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'task1',
+    'cart',
 
 
 
@@ -67,6 +68,14 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # 'cart.context_processors.cart',
+                'task1.context_processors.products',
+                'task1.context_processors.categories',
+                'task1.context_processors.specialslider',
+                'task1.context_processors.cartitem',
+                'task1.context_processors.websitesettings',
+                'task1.context_processors.blogpost',
+                'task1.context_processors.Comments',
 
             ],
         },

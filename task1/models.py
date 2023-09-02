@@ -2,6 +2,34 @@ from django.db import models
 
 # Create your models he
 
+class Category(models.Model):
+    title=models.CharField(max_length=50,blank=True)
+    subcattegorry=models.CharField(max_length=50,blank=True,)
+    icon=models.CharField(max_length=20,blank=True)
+    subcategory = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.title
+
+    @property
+    def get_products(self):
+        return self.products_set.all()
+
+class Products(models.Model):
+    category=models.ManyToManyField(Category)
+    subcategory=models.BooleanField(default=False,null=True)
+    productimage = models.ImageField(upload_to='toprelatedProduct/')
+    productcategory = models.CharField(max_length=50)
+    productname = models.CharField(max_length=50)
+    price = models.DecimalField(max_digits=90, decimal_places=2)
+    oldprice = models.DecimalField(max_digits=90, decimal_places=2)
+    productDiscription=models.TextField(max_length=200)
+
+    @property
+    def get_total_quantity(self):
+        return sum ( item.quantity for item in self.cartitem_set.all ( ) )
+    def __str__(self):
+        return self.productname
 class Slider(models.Model):
     slideImage=models.ImageField(upload_to='slider/')
     slidetitle=models.CharField(max_length=50)
@@ -32,15 +60,16 @@ class Register(models.Model):
     def __str__(self):
         return self.username
 
-class SpecialSlider(models.Model):
-    slideImage=models.ImageField(upload_to='special_slider/')
-    slideHeader=models.CharField(max_length=30)
-    firsttitle=models.CharField(max_length=30)
-    secoundtitle=models.CharField(max_length=30)
-    productName=models.CharField(max_length=40)
-    productDiscountPrice=models.DecimalField(max_digits=90,decimal_places=2)
-    productOriginalPrice = models.DecimalField(max_digits=90, decimal_places=2)
-    Buttontext=models.CharField(max_length=20)
+class SecondSlider(models.Model):
+    sliderImage=models.ImageField(upload_to='sliderimage/')
+    slideheader=models.CharField(max_length=40)
+    firsttitle=models.CharField(max_length=70)
+    secoundtitle=models.CharField(max_length=80)
+    productname=models.CharField(max_length=80)
+    price=models.DecimalField(max_digits=20,decimal_places=2)
+    oldprice = models.DecimalField ( max_digits=20, decimal_places=2 )
+
+
 
 class Tag(models.Model):
     name=models.CharField(max_length=100)
@@ -81,32 +110,15 @@ class DealsOfTheDay(models.Model):
     def __str__(self):
         return self.productname
 
-class Category(models.Model):
-    title=models.CharField(max_length=50)
-    subcattegorry=models.CharField()
-    icon=models.CharField(max_length=20,blank=True)
-    subcategory = models.BooleanField(default=False)
-    def __str__(self):
-        return self.title
 
 
 
-    @property
-    def get_products(self):
-        return self.products_set.all()
-
-class Products(models.Model):
-    category=models.ForeignKey(Category,on_delete=models.CASCADE)
-    subcategory=models.BooleanField(default=False)
-    productimage = models.ImageField(upload_to='toprelatedProduct/')
-    productcategory = models.CharField(max_length=50)
-    productname = models.CharField(max_length=50)
-    productDiscountprice = models.DecimalField(max_digits=90, decimal_places=2)
-    productOriginalprice = models.DecimalField(max_digits=90, decimal_places=2)
-    productDiscription=models.TextField(max_length=200)
-
+    class Meta:
+        ordering=['-id']
     def __str__(self):
         return self.productname
+
+
 
 class Banner(models.Model):
     bannerimage=models.ImageField(upload_to='banner/')
@@ -128,9 +140,6 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.name
-
-
-
 
 
 class bannerMovinImage(models.Model):
@@ -160,7 +169,7 @@ class SpecialOffer(models.Model):
 
 class WebsiteSetting(models.Model):
     logo=models.ImageField(upload_to='logo/')
-    email:models.EmailField(max_length=40)
+    email=models.CharField(max_length=40)
     twitterlink=models.CharField(max_length=100)
     facebooklink=models.CharField(max_length=100)
     youtubelink=models.CharField(max_length=100)
@@ -170,7 +179,21 @@ class WebsiteSetting(models.Model):
     availableTime=models.CharField(max_length=100)
 
 
+class Cart(models.Model):
+    user = models.ForeignKey(Register, on_delete=models.CASCADE,null=True)
+    items = models.ManyToManyField(Products, through='CartItem')
+
+    def __str__(self):
+        return f"Cart: {self.user} - {self.id}"
+    @property
+    def get_total_quantity(self):
+        return sum(item.quantity for item in self.cartitem_set.all())
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    product = models.ForeignKey(Products, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
 
 
-
+    def __str__(self):
+        return str(self.quantity)
 
