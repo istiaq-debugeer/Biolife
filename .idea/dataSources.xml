@@ -17,18 +17,11 @@
       <jdbc-url>jdbc:sqlite:identifier.sqlite</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="db.sqlite3" uuid="a2a8a8e9-2e20-42d6-809b-48e207c0d13a">
+    <data-source source="LOCAL" name="db.sqlite3" uuid="9c7fcb75-1cf4-411d-944c-d10cbafd520d">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:J:\InternShip\db.sqlite3</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-    <data-source source="LOCAL" name="db.sqlite3 [2]" uuid="95dffef3-03a6-42a3-95dc-1517c1d2a256">
-      <driver-ref>sqlite.xerial</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:D:\Biolife\db.sqlite3</jdbc-url>
+      <jdbc-url>jdbc:sqlite:I:\Biolife\db.sqlite3</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

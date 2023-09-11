@@ -107,17 +107,33 @@
                                     <li>{{ message }}</li>
                                 {% endfor %}
                                  {% csrf_token %}
+                                {% if form.non_field_errors %}
+                                {% for error in form.non_field_errors %}
+                                    {{ error }}
+                                {% endfor %}
+                                {% endif %}
+                                {% for hidden in form.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+
+                                {% for field in form %}
+
+                                    {{ field.errors.as_ul }}
+                                {% endfor %}
+                                <p class="form-row">
+                                    <input type="text" name="first_name" value="" placeholder="First Name" class="txt-input">
+                                </p>
+                                <p class="form-row">
+                                    <input type="text" name="last_name" value="" placeholder="Last name" class="txt-input">
+                                </p>
                                 <p class="form-row">
                                     <input type="email" name="email" value="" placeholder="email" class="txt-input">
                                 </p>
                                 <p class="form-row">
-                                    <input type="text" name="username" value="" placeholder="username" class="txt-input">
+                                    <input type="text" name="username" value="" placeholder="Username" class="txt-input">
                                 </p>
                                 <p class="form-row">
-                                    <input type="tel" name="password1" value="" placeholder="Pass1" class="txt-input">
-                                </p>
-                                <p class="form-row">
-                                    <input type="tel" name="password2" value="" placeholder="Pass2" class="txt-input">
+                                    <input type="text" name="password" value="" placeholder="Password" class="txt-input">
                                 </p>
                                 <p class="form-row">
                                     <button class="btn btn-submit" type="submit">Submit</button>

@@ -21,7 +21,7 @@
     <div class="hero-section hero-background">
         <h1 class="page-title">Organic Fruits</h1>
     </div>
-    <h1><a href="{% url 'logout' %}">Logout</a></h1>
+
     <!--Navigation section-->
     <div class="container">
         <nav class="biolife-nav">
@@ -45,9 +45,13 @@
                         <div class="signin-container">
                             <form action="{% url 'loginform' %}" name="frm-login" method="post">
                                 {% csrf_token %}
+                                {% for message in messages %}
+                                    {{ message }}
+                                {% endfor %}
+
                                 <p class="form-row">
-                                    <label for="fid-name">Email Address:<span class="requite">*</span></label>
-                                    <input type="email" id="fid-name" name="email" value="" class="txt-input">
+                                    <label for="fid-name"> Username:<span class="requite">*</span></label>
+                                    <input type="text" id="fid-name" name="username" value="" class="txt-input">
                                 </p>
                                 <p class="form-row">
                                     <label for="fid-pass">Password:<span class="requite">*</span></label>

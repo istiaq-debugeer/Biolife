@@ -7,7 +7,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('',views.HomeView.as_view(),name='index'),
     path('home-<int:page_number>/', views.home_page.as_view(), name='home_page'),
-    path('login/',views.login_view,name='loginform' ),
+    path('login/',views.login_view.as_view(),name='loginform' ),
     path('logout/',views.logout_view,name='logout' ),
     path('register/',views.RegisterView.as_view(),name='registerform'),
     path('blogPostditails/<int:blogger_id>',views.BlogditailsView.as_view(),name='blogditails'),
@@ -20,6 +20,8 @@ urlpatterns = [
     path('about-us/',views.AboutUs.as_view(),name='about-us'),
     path('add-to-cart/<int:product_id>/',views.add_to_cart,name='add-to-cart'),
     path('productditails/<int:product_id>/',views.singleProduct.as_view(),name='singleproductview'),
+    path('edit/',views.edit_cart_item,name='edit'),
+    path('remove-cart/<int:cart_item_id>/',views.removecart,name='remove')
 
     # path ( 'cart/', views.cart_view, name='cart' ),
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

@@ -76,6 +76,7 @@ TEMPLATES = [
                 'task1.context_processors.websitesettings',
                 'task1.context_processors.blogpost',
                 'task1.context_processors.Comments',
+                'task1.context_processors.cart_quantity'
 
             ],
         },

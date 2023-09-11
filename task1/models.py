@@ -1,4 +1,6 @@
+from django.contrib.auth.models import User
 from django.db import models
+
 
 # Create your models he
 
@@ -25,9 +27,8 @@ class Products(models.Model):
     oldprice = models.DecimalField(max_digits=90, decimal_places=2)
     productDiscription=models.TextField(max_length=200)
 
-    @property
-    def get_total_quantity(self):
-        return sum ( item.quantity for item in self.cartitem_set.all ( ) )
+
+
     def __str__(self):
         return self.productname
 class Slider(models.Model):
@@ -39,26 +40,6 @@ class Slider(models.Model):
     secoundbuttontitle=models.CharField(max_length=50)
 
 
-class User(models.Model):
-        email=models.EmailField(max_length=55)
-        username=models.CharField(max_length=30)
-        password1=models.CharField(max_length=35)
-        password2=models.CharField(max_length=35)
-
-
-
-        def __str__(self):
-            return self.username
-
-
-class Register(models.Model):
-    email = models.EmailField(max_length=55)
-    username = models.CharField(max_length=30)
-    password1 = models.CharField(max_length=35)
-    password2 = models.CharField(max_length=35)
-
-    def __str__(self):
-        return self.username
 
 class SecondSlider(models.Model):
     sliderImage=models.ImageField(upload_to='sliderimage/')
@@ -90,7 +71,7 @@ class BlogPost(models.Model):
         #     return BlogPost.objects.filter(tags__in=self.tags.all())
 
 class Comment(models.Model):
-    user=models.ForeignKey(Register,on_delete=models.CASCADE)
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
     textcomment=models.TextField(max_length=500)
     publishdate=models.DateTimeField(auto_now=True)
 
@@ -180,18 +161,21 @@ class WebsiteSetting(models.Model):
 
 
 class Cart(models.Model):
-    user = models.ForeignKey(Register, on_delete=models.CASCADE,null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
     items = models.ManyToManyField(Products, through='CartItem')
 
     def __str__(self):
         return f"Cart: {self.user} - {self.id}"
-    @property
-    def get_total_quantity(self):
-        return sum(item.quantity for item in self.cartitem_set.all())
+
+    def clear_cart(self):
+        self.items.clear()
+
+    
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=1)
+    quantity = models.PositiveIntegerField(default=0)
+
 
 
     def __str__(self):

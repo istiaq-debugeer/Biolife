@@ -91,8 +91,8 @@
                                             </a>
                                             <a class="prd-name" href="#">{{ item.product.productname }}</a>
                                             <div class="action">
-                                                <a href="#" class="edit"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                                                <a href="#" class="remove"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                                                <a href="{% url 'edit'  %} class="edit"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                                                <a href="{% url 'remove' item.id %}" class="remove"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                                             </div>
                                         </td>
                                         <td class="product-price" data-title="Price">
@@ -113,9 +113,9 @@
                                         <td class="product-subtotal" data-title="Total">
                                             <div class="price price-contain">
 
-                                                <ins><span class="price-amount"><span class="currencySymbol">£</span>{{ item_price }}</span></ins>
+                                                <ins><span class="price-amount"><span class="currencySymbol">£</span>{{ item_price}}</span></ins>
 
-                                                <del><span class="price-amount"><span class="currencySymbol">£</span>95.00</span></del>
+                                                <del><span class="price-amount"><span class="currencySymbol">£</span>{{ item.product.oldprice }}</span></del>
 
                                             </div>
                                         </td>

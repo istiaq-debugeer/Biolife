@@ -1,34 +1,38 @@
+from django.contrib.auth.models import User
 from django import forms
-
 from django.contrib.auth.forms import UserCreationForm
-from django.forms import EmailInput, PasswordInput,ModelForm
-#
-from task1.models import Register,Comment,CommentAttachment,Contact
+from task1.models import Comment,CommentAttachment,Contact
 #
 #
 #
 class NewUserForm(UserCreationForm):
 	email = forms.EmailField(required=True)
 
-class RegisterForm(ModelForm):
+class RegisterForm(forms.ModelForm):
 
     class Meta:
-        model=Register
-        fields='__all__'
+        model=User
+        fields=('first_name','last_name','email','username','password')
 
+class Loginform(forms.Form):
 
-class ContactForm(ModelForm):
+    username=forms.CharField(max_length=50)
+    password=forms.CharField(max_length=30)
+    # class Meta:
+    #     model=User
+    #     fields=('username','password')
+class ContactForm(forms.ModelForm):
     class Meta:
         model=Contact
         fields='__all__'
 
-class CommentForm(ModelForm):
+class CommentForm(forms.ModelForm):
         class Meta:
             model=Comment
             fields=['textcomment']
 
 
-class AttachmentForm(ModelForm):
+class AttachmentForm(forms.ModelForm):
     class Meta:
         model=CommentAttachment
         fields=['attachment']

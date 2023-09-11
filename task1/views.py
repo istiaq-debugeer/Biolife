@@ -1,13 +1,14 @@
 from django.contrib.auth import login, authenticate,logout
 from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from task1.forms import RegisterForm,CommentForm
-from task1.models import Slider,  FolloUs,SecondSlider,User,Cart,CartItem,Comment,CommentAttachment,BlogPost, DealsOfTheDay, Category,Products ,Banner, Carousel, Contact,bannerMovinImage,SpecialOffer,Register
+from task1.forms import RegisterForm,CommentForm,Loginform
+from task1.models import Slider,  FolloUs,SecondSlider,Cart,CartItem,Comment,CommentAttachment,BlogPost, DealsOfTheDay, Category,Products ,Banner, Carousel, Contact,bannerMovinImage,SpecialOffer
 from django.shortcuts import render,redirect,get_object_or_404
 from django.views.generic import TemplateView,View
 from django.http import HttpResponseRedirect
-
+from django.contrib.auth.models import User
 class home_page(TemplateView):
 
     def get(self,request,page_number, ):
@@ -53,6 +54,7 @@ class home_page(TemplateView):
 
 
 
+
 class AboutUs(TemplateView):
     template_name = 'pages/about-us.html'
 
@@ -77,47 +79,44 @@ class Checkout(TemplateView):
 
 class ShoppingCart(View):
 
-    def get(self,request):
 
-    # def get_context_data ( self, **kwargs ):
-    #     context = super ( ).get_context_data ( **kwargs )
-    #     context.update (
-    #         {
-    #             'category': Category.objects.filter ( subcategory=True ),
-    #             'product': Products.objects.filter ( subcategory=True )
-    #         }
-    #     )
-    #     return context
+    def get(self, request):
+        if request.user.is_authenticated:
+            # For authenticated users, retrieve the cart associated with their account
+            cart = Cart.objects.get_or_create(user=request.user)[0]
+            cart_items = CartItem.objects.filter(cart=cart)
+        else:
+            # For anonymous users, retrieve the session-based cart
+            session_cart_id = request.session.get('cart_id')
+            if session_cart_id:
+                cart = Cart.objects.get_or_create(id=session_cart_id)[0]
+                cart_items = CartItem.objects.filter(cart=cart)
+            else:
+                # Create a new session-based cart if one doesn't exist
+                cart = Cart.objects.create()
+                request.session['cart_id'] = cart.id
+                cart_items = []
 
-
-        # cart = Cart.objects.get(user=request.user)
-        cart_items = CartItem.objects.all ( )
-        print ( 'cartitem:', cart_items )
-
-        total_prices = sum ( item.quantity * item.product.price for item in cart_items )
-
+        total_prices = sum(item.quantity * item.product.price for item in cart_items)
         item_prices = [item.quantity * item.product.price for item in cart_items]
-        cart_items_and_prices = zip ( cart_items, item_prices )
+        cart_items_and_prices = zip(cart_items, item_prices)
+        total_quantity = sum(item.quantity for item in cart_items)
 
-        total_quantity = sum ( item.quantity for item in cart_items )
-
-        print ( total_prices )
         context = {
             'cart_items': cart_items,
             'cart_items_and_prices': cart_items_and_prices,
             'total_prices': total_prices,
             'total_quantity': total_quantity,
-
         }
 
-        context.update (
-                 {
-                     'category': Category.objects.filter ( subcategory=True ),
-                    'product': Products.objects.filter ( subcategory=True )
-                 }
-             )
-        return render ( request, 'pages/shopping-cart.html', context=context )
+        context.update(
+            {
+                'category': Category.objects.filter(subcategory=True),
+                'product': Products.objects.filter(subcategory=True)
+            }
+        )
 
+        return render(request, 'pages/shopping-cart.html', context=context)
 class Eror(TemplateView):
     template_name = 'pages/404.html'
 
@@ -137,6 +136,8 @@ class HomeView(TemplateView):
             }
         )
 
+
+
         context['slider']=Slider.objects.all()
         context['specialslider']=SecondSlider.objects.all()
         context['blog']=BlogPost.objects.all()
@@ -149,6 +150,11 @@ class HomeView(TemplateView):
 
         return context
 
+
+
+
+
+
 class RegisterView(View):
     def get(self,request):
         return render(request,'pages/register.html')
@@ -156,30 +162,64 @@ class RegisterView(View):
     def post(self,request):
         form=RegisterForm(data=request.POST)
         if form.is_valid():
-            user=form.save()
-
-            messages.success(request,'Your message sents successfully')
-
+             password=form.data['password']
+             user=form.save()
+             user.set_password(password)
+             user.save()
+             messages.success(request,'registrered successfully')
         else:
-            messages.error(request,'Invalid Request')
+             messages.error(request,'Invalid Request')
 
-        return render(request,'pages/register.html')
-
-
-
+        return render(request,'pages/register.html' ,{'form': form})
 
 def logout_view(request):
+    # if request.user.is_authenticated:
+    #     request.user.cart.clear_cart()
+
+        # Use Django's built-in logout function
     logout(request)
+
     return redirect('/')
-def login_view(request):
-    if request.method == 'POST':
-        email = request.POST['email']
-        password = request.POST['password']
-        user = authenticate(request, email=email, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('/')  # Redirect to the desired page
-    return render(request, 'pages/login.html')
+
+    # user = request.user  # Get the user object
+    #
+    # if user.is_authenticated:
+    #     # User is authenticated, access user.id or other user-related fields
+    #     user_id = user.id
+    # else:
+    #     # User is not authenticated (AnonymousUser)
+    #     user_id = None  # Ha
+class  login_view(View):
+    def get(self,request):
+        return render(request, 'pages/login.html')
+
+    def post(self,request):
+        form=Loginform(request.POST)
+        if form.is_valid():
+            username=form.data['username']
+            password=form.data['password']
+            try:
+               user=User.objects.get(username=username)
+               if user.check_password(password):
+                   login(request,user)
+                   messages.success(request,'login succesfull')
+               messages.error(request, 'password didnt match')
+            except ObjectDoesNotExist:
+                 messages.error(request,'user not found')
+        else:
+            print(form.errors)
+            messages.error(request,"invalid error")
+
+        return render(request, 'pages/login.html',{'form':form})
+
+    # if request.method == 'POST':
+    #     email = request.POST['email']
+    #     password = request.POST['password']
+    #     user = authenticate(request, email=email, password=password)
+    #     if user is not None:
+    #         login(request, user)
+    #         return redirect('/')  # Redirect to the desired page
+    # return render(request, 'pages/login.html')
 
 class BlogditailsView(View):
 
@@ -219,7 +259,7 @@ class post_comment(View):
         # attachment_form=AttachmentForm(request.POST,request.FILES)
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
-            comment.user=Register.objects.get(username=request.user.username)
+            comment.user=User.objects.get(username=request.user.username)
             # attachment=attachment_form.save(commit=False)
             # attachment.comment = comment
             # attachment.save()
@@ -230,24 +270,27 @@ class post_comment(View):
 
 
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
-@login_required
-def add_to_cart(request, product_id):
 
+def add_to_cart(request, product_id):
     product = get_object_or_404(Products, id=product_id)
 
-    user=Register.objects.get(username=request.user.username)
-    print('user:',user)
-    cart, created = Cart.objects.get_or_create(user=user)
-    print("Cart created:",created)
-    cart_item ,created= CartItem.objects.get_or_create(cart=cart, product=product)
+    if request.user.is_authenticated:
+        user = request.user
+        cart, created = Cart.objects.get_or_create(user=user)
+    else:
+        session_cart_id = request.session.get('cart_id')
+        if session_cart_id:
+            cart, created = Cart.objects.get_or_create(id=session_cart_id)
+        else:
+            cart = Cart.objects.create()
+            request.session['cart_id'] = cart.id
 
-    print ( "Cart created:",cart_item )
+    cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
+
     cart_item.quantity += 1
-
-    print ( "quantity:", cart_item.quantity )
     cart_item.save()
 
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 class singleProduct(View):
@@ -261,8 +304,8 @@ class singleProduct(View):
 
 
 def edit_cart_item(request,cart_item_id):
-    cart_item=get_object.or_404(CartItem,id=cart_item_id)
-
+    cart_item=get_object_or_404(CartItem,id=cart_item_id)
+    user = User.objects.get(username=request.user.username)
     if request.method=='POST':
         quantity=int(request.POST.get('quantity',1))
 
@@ -273,3 +316,17 @@ def edit_cart_item(request,cart_item_id):
 
     context={'cart_item':cart_item}
     return render(request,edit_cart_item())
+def removecart(request,cart_item_id):
+    try:
+        cart_item = CartItem.objects.get(id=cart_item_id)
+        cart_item.delete()
+        # Redirect the user to a success page or another appropriate URL
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    except CartItem.DoesNotExist:
+        # Handle the case where the CartItem doesn't exist
+        # You might want to return a 404 page or some other response
+        return HttpResponse("CartItem not found", status=404)
+    except Exception as e:
+        # Handle other exceptions (e.g., database errors)
+        # You can log the error for debugging purposes
+        return HttpResponse("An error occurred", status=500)
