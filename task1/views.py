@@ -8,6 +8,7 @@ from task1.models import Slider,  FolloUs,SecondSlider,Cart,CartItem,Comment,Com
 from django.shortcuts import render,redirect,get_object_or_404
 from django.views.generic import TemplateView,View
 from django.http import HttpResponseRedirect
+from django.http import JsonResponse,HttpResponse
 from django.contrib.auth.models import User
 class home_page(TemplateView):
 
@@ -64,9 +65,11 @@ class Blog(View):
         blog=BlogPost.objects.all()
         recent_posts = BlogPost.objects.order_by('-postdate')[:3]
         formatted_page_number = "{:02d}".format(page_number)
+
         context = {
             'blog':blog,
             'recent_posts':recent_posts,
+
             # 'category': Category.objects.filter ( subcategory=True ),
             # 'products': Products.objects.filter ( subcategory=True )
         }
@@ -252,24 +255,29 @@ class ContactView(View):
 
 class post_comment(View):
 
-    @method_decorator(login_required)
-    def post(self, request):
 
+    def post(self, request,blogger_id):
+
+        blog_post=get_object_or_404(BlogPost,id=blogger_id)
         comment_form = CommentForm(request.POST)
         # attachment_form=AttachmentForm(request.POST,request.FILES)
         if comment_form.is_valid():
-            comment = comment_form.save(commit=False)
-            comment.user=User.objects.get(username=request.user.username)
+            comment_text = comment_form.cleaned_data['textcomment']
+            Comment.objects.create(
+                user=self.request.user,
+                post=blog_post,
+                textcomment=comment_text
+            )
+
             # attachment=attachment_form.save(commit=False)
             # attachment.comment = comment
             # attachment.save()
-            comment.save()
+
         else:
-            comment_form = CommentForm()
+          messages.error(request,'invalid request')
             # attachment_form = AttachmentForm()
 
-
-        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+        return redirect(f'/blogPostditails/{blogger_id}')
 
 def add_to_cart(request, product_id):
     product = get_object_or_404(Products, id=product_id)
@@ -290,7 +298,11 @@ def add_to_cart(request, product_id):
     cart_item.quantity += 1
     cart_item.save()
 
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+    return redirect('/')
+
+
+# return redirect('/')
 
 
 class singleProduct(View):
@@ -330,3 +342,12 @@ def removecart(request,cart_item_id):
         # Handle other exceptions (e.g., database errors)
         # You can log the error for debugging purposes
         return HttpResponse("An error occurred", status=500)
+
+def clear_cart(request):
+    try:
+        if request.user.is_authenticated:
+            cart_item=CartItem.objects.all()
+            cart_item.delete()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    except CartItem.DoesNotExist:
+        return HttpResponse("CartItem not found", status=404)

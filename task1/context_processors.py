@@ -1,20 +1,27 @@
-from .models import Category,Comment,BlogPost,Products,SecondSlider,Cart,CartItem,WebsiteSetting
+from .models import Category, Comment, BlogPost, Products, SecondSlider, Cart, CartItem, WebsiteSetting
+
 
 def categories(request):
-    return{"categories":Category.objects.all()}
+    return {"categories": Category.objects.all()}
+
 
 def products(request):
-    return {"products":Products.objects.all()}
+    return {"products": Products.objects.all()}
+
 
 def specialslider(request):
-    return {"specialslider":SecondSlider.objects.all()}
+    return {"specialslider": SecondSlider.objects.all()}
 
 
 def blogpost(request):
-    return {"recents":BlogPost.objects.order_by('-postdate')[:3]}
+
+    return {"recents": BlogPost.objects.order_by('-postdate')[:3]}
+
 
 def cart(request):
-    return {"cart":Cart.objects.all()}
+
+    return{"cart":Cart.objects.filter(user=user)}
+
 
 def cartitem(request):
     if request.user.is_authenticated:
@@ -24,13 +31,17 @@ def cartitem(request):
     else:
         user = None
         cart_items = None
-    return {'cart_items':cart_items}
+    return {'cart_items': cart_items}
+
 
 def websitesettings(request):
-    return {"websitesettings":WebsiteSetting.objects.first()}
+    return {"websitesettings": WebsiteSetting.objects.first()}
+
 
 def Comments(request):
-    return{"comments":Comment.objects.all()}
+    return {"comments": Comment.objects.all()}
+
+
 def cart_quantity(request):
     if request.user.is_authenticated:
         # For authenticated users, retrieve the cart associated with their account
@@ -53,5 +64,4 @@ def cart_quantity(request):
     cart_items_and_prices = zip(cart_items, item_prices)
     total_quantity = sum(item.quantity for item in cart_items)
 
-
-    return {'total_quantity': total_quantity,'total_prices':total_prices}
+    return {'total_quantity': total_quantity, 'total_prices': total_prices}
