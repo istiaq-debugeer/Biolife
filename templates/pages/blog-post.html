@@ -126,41 +126,45 @@
 
                     <!--Comment Block-->
                     <div class="post-comments">
-                        <h3 class="cmt-title">Comments<sup>{{ blog.get_count }}</sup></h3>
+                        <h3 class="cmt-title">Comments<sup id="count">{{ blog.get_count }}</sup></h3>
+                        {% if request.user.is_authenticated %}
+                            <div class="comment-form">
+                                <form id='my_form' action="{% url 'comment' blog.id %}" method="post"
+                                      name="">
+                                    {% csrf_token %}
+                                    <p class="form-row">
+                                        <textarea name="textcomment" id="textcomment" cols="30" rows="10"
+                                                  placeholder="Write your comment"></textarea>
+                                        <a href="#" class="current-author"><img src="assets/images/blogpost/viewer-avt.png"
+                                                                                width="41" height="41" alt=""></a>
+                                    </p>
+                                    <p class="form-row last-btns">
+                                        <button type="submit" value="submit" class="btn btn-submit">post a comment</button>
+                                        <a href="#" class="btn btn-fn-1"><i class="fa fa-smile-o"
+                                                                            aria-hidden="true"></i></a>
+                                        <a href="#" class="btn btn-fn-1"><i class="fa fa-paperclip" aria-hidden="true"></i></a>
+                                        <a href="#" class="btn btn-fn-1"><i class="fa fa-file-image-o"
+                                                                            aria-hidden="true"></i></a>
+                                    </p>
+                                </form>
 
-                        <div class="comment-form">
-                            <form id='my_form' action="{% url 'comment' blog.id %}" method="post"
-                                  name="frm-post-comment">
-                                {% csrf_token %}
-                                <p class="form-row">
-                                    <textarea name="textcomment" id="txt-comment-ath-3364" cols="30" rows="10"
-                                              placeholder="Write your comment"></textarea>
-                                    <a href="#" class="current-author"><img src="assets/images/blogpost/viewer-avt.png"
-                                                                            width="41" height="41" alt=""></a>
-                                </p>
-                                <p class="form-row last-btns">
-                                    <button type="submit" class="btn btn-submit">post a comment</button>
-                                    <a href="#" class="btn btn-fn-1"><i class="fa fa-smile-o"
-                                                                        aria-hidden="true"></i></a>
-                                    <a href="#" class="btn btn-fn-1"><i class="fa fa-paperclip" aria-hidden="true"></i></a>
-                                    <a href="#" class="btn btn-fn-1"><i class="fa fa-file-image-o"
-                                                                        aria-hidden="true"></i></a>
-                                </p>
-                            </form>
-                        </div>
+                            </div>
+                            {% else %}
+                            <p><a href="{% url 'loginform' %}">login</a> To comment</p>
+                        {% endif %}
 
-                       <div class="comment-list">
+                       <div class="comment-list"  >
 
                             <ol class="post-comments lever-0">
-                                <li class="comment-elem">
-                                    <div class="wrap-post-comment">
+                                <li class="comment-elem" >
+                                    <div class="wrap-post-comment" >
                                        {% for list in blog.get_comments %}
-                                        <div class="cmt-inner">
+                                        <div class="cmt-inner" id="comment-list" >
                                             <div class="auth-info">
                                                 <a href="#" class="author-contact"><img src="assets/images/blogpost/author-02.png" alt="" width="29" height="28">{{ list.user }}</a>
-                                                <span class="cmt-time">4 days ago</span>
+                                                <span class="cmt-time">{{ list.publishdate }}</span>
                                             </div>
-                                            <div class="cmt-content">
+                                            <div class="cmt-content" id="cmnt-content" >
                                                 <p>{{ list.textcomment }}</p>
                                             </div>
                                             <div class="cmt-fooot">
@@ -232,6 +236,7 @@
                             </form>
                         </div>
                     </div>
+                    <div id="ajax-response"></div>
 
                     <!--Categories Widget-->
                     <div class="widget biolife-filter">
@@ -271,9 +276,6 @@
                                         </div>
                                     </li>
                                 {% endfor %}
-
-
-
                             </ul>
 
                         </div>
@@ -341,13 +343,16 @@
                     <div class="widget comment-widget">
                         <h4 class="wgt-title">Recent Comments</h4>
                         <div class="wgt-content">
-                            <ul class="comment-list">
+                            <ul class="comment-list" id="recent_comments">
                                 {% for list in blog.get_comments %}
-                                    <li>
-                                        <p class="cmt-item"><a href="#" class="auth-name"><i
-                                                class="biolife-icon icon-conversation"></i>{{ list.user }}</a><a
-                                                href="#" class="link-post">{{ list.get_short_comment }}</a></p>
-                                    </li>
+                                    {% if forloop.counter <= 4 %}
+                                        <li>
+                                            <p class="cmt-item"><a href="#" class="auth-name"><i
+                                                    class="biolife-icon icon-conversation"></i>{{ list.user }}</a><a
+                                                    href="#" class="link-post">{{ list.get_short_comment }}</a></p>
+                                        </li>
+                                    {% endif %}
+
                                 {% endfor %}
 
                             </ul>
@@ -435,23 +440,52 @@
 
     <!-- Scroll Top Button -->
     <a class="btn-scroll-top"><i class="biolife-icon icon-left-arrow"></i></a>
-    {#    <script>#}
-    {#    $(document).ready(function(){#}
-    {#        $("#my_form").submit(function(){#}
-    {#            $.ajax({#}
-    {#                url:$(this).attr("action"),#}
-    {#                type:$(this).attr("method"),#}
-    {#                data:$(this).serialize(),#}
-    {#                success:function(data){#}
-    {#                    //$("h1").text(data['time']);#}
-    {#                    console.log(data);#}
-    {#                }#}
-    {#            });#}
-    {#            return false;#}
-    {#        });#}
-    {#    });#}
-    {#    </script>#}
+    <script
+  src="https://code.jquery.com/jquery-3.7.1.min.js"
+  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+  crossorigin="anonymous"></script>
+{#    <script src="{% static 'assets/js/script.js' %}"></script>#}
+    <script>
+        $(document).ready(function () {
+            $('#my_form').on('submit', function (event) {
+                event.preventDefault(); // Prevent the form from submitting the traditional way
 
+                // Send the AJAX request
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'), // Use the form's action attribute as the URL
+                    data: $(this).serialize(), // Serialize the form data
+
+                    success: function (data) {
+                        if (data.success) {
+                            var commentText = $('#textcomment').val(); // Get the comment text
+                            var commentHtml = '<li class="comment-elem"><div class="wrap-post-comment"><div class="cmt-inner"><div class="auth-info"><a href="#" class="author-contact"><img src="assets/images/blogpost/author-02.png" alt="" width="29" height="28">' + data.username + '</a><span class="cmt-time">Just now</span></div><div class="cmt-content"><p>' + commentText + '</p></div><div class="cmt-fooot"><a href="#" class="btn btn-response"><i class="fa fa-commenting" aria-hidden="true"></i>Comment</a><a href="#" class="btn btn-like"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>0</a><a href="#" class="btn btn-dislike"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i>0</a></div></div></div></li>';
+
+                        // Append the new comment to the comment list
+                        $('#comment-list').append(commentHtml.valueOf());
+
+
+                        // Clear the comment textarea
+                        $('#textcomment').val('');
+                        var currentCommentCount = parseInt($('#count').text());
+                        var newCommentCount = currentCommentCount + 1;
+                        $('#count').text(newCommentCount);
+
+
+
+                    } else {
+                        // Display validation errors in the response div
+                         $('#ajax-response').html('Failed to post the comment: ' + data.errors);
+
+                    }
+
+                    },
+
+                });
+            });
+
+        });
+    </script>
     </body>
 {% endblock %}
 

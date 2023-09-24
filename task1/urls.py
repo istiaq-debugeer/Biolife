@@ -24,5 +24,6 @@ urlpatterns = [
     path('remove-cart/<int:cart_item_id>/',views.removecart,name='remove'),
     path('clear_cart/',views.clear_cart,name='clear')
 
+
     # path ( 'cart/', views.cart_view, name='cart' ),
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
